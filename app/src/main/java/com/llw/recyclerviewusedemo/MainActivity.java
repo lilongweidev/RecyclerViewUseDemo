@@ -20,6 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.llw.recyclerviewusedemo.RecyclerViewAnimation.runLayoutAnimation;
+
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.tv_edit)
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             mList.clear();
             mList.addAll(resultsBeans);
             mAdapter.notifyDataSetChanged();//刷新数据
+            runLayoutAnimation(rv);//动画显示
             rv.setVisibility(View.VISIBLE);
             rvNormalShow.setVisibility(View.GONE);
         } else {
@@ -193,9 +196,15 @@ public class MainActivity extends AppCompatActivity {
             refresh.setOnRefreshListener(refreshLayout -> {
                 //重新装填数据
                 initList();
+                index = 0;
+                mEditMode = STATE_DEFAULT;//恢复默认状态
+                editorStatus = false;//恢复默认状态
+                tvDelete.setText("删除");
+                tvEdit.setVisibility(View.VISIBLE);//显示编辑
             });
         }
 
         mAdapter.notifyDataSetChanged();
+        runLayoutAnimation(rv);//动画显示
     }
 }
